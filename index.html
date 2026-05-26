@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 1 Year Anniversary 💖</title>
+
+<style>
+
+/* ===== BACKGROUND MAGIC ===== */
+body{
+    margin:0;
+    padding:0;
+    font-family: Arial, sans-serif;
+    overflow:hidden;
+    background: #0b0c2a;
+}
+
+/* animated stars */
+.stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:transparent;
+    z-index:-3;
+}
+
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    animation: twinkle 2s infinite ease-in-out;
+}
+
+@keyframes twinkle{
+    0%,100%{opacity:0.2;}
+    50%{opacity:1;}
+}
+
+/* floating hearts */
+.hearts span{
+    position:absolute;
+    bottom:-50px;
+    color:#ff4d88;
+    font-size:20px;
+    animation: float 10s linear infinite;
+}
+
+@keyframes float{
+    0%{transform:translateY(0); opacity:0;}
+    50%{opacity:1;}
+    100%{transform:translateY(-120vh); opacity:0;}
+}
+
+/* glowing blur lights */
+.glow{
+    position:fixed;
+    width:100%;
+    height:100%;
+    z-index:-2;
+}
+
+.glow span{
+    position:absolute;
+    width:200px;
+    height:200px;
+    background:rgba(255, 77, 136, 0.3);
+    border-radius:50%;
+    filter:blur(80px);
+    animation: move 12s infinite alternate;
+}
+
+@keyframes move{
+    0%{transform:translate(0,0);}
+    100%{transform:translate(200px,150px);}
+}
+
+/* ===== MAIN CARD ===== */
+.container{
+    width:90%;
+    max-width:700px;
+    margin:40px auto;
+    background:rgba(255,255,255,0.92);
+    border-radius:25px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}
+
+h1{
+    color:#ff4d88;
+}
+
+.gif{
+    width:180px;
+    border-radius:20px;
+    margin:10px 0;
+}
+
+.question{
+    font-size:22px;
+    margin:20px 0;
+}
+
+button{
+    padding:12px 25px;
+    margin:10px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.yes{background:#ff4d88;color:white;}
+.no{background:#444;color:white;}
+
+#result{
+    margin-top:20px;
+    font-size:20px;
+    color:#ff4d88;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- stars -->
+<div class="stars" id="stars"></div>
+
+<!-- glowing lights -->
+<div class="glow">
+    <span style="top:10%; left:20%;"></span>
+    <span style="top:50%; left:60%;"></span>
+    <span style="top:70%; left:30%;"></span>
+</div>
+
+<!-- floating hearts -->
+<div class="hearts">
+    <span style="left:10%;">💖</span>
+    <span style="left:25%;">💕</span>
+    <span style="left:40%;">💗</span>
+    <span style="left:60%;">💞</span>
+    <span style="left:80%;">💘</span>
+</div>
+
+<div class="container">
+<h1>💖 1 Year Anniversary 💖</h1>
+
+<img id="gif" class="gif" src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif">
+
+<div id="quiz"></div>
+<div id="result"></div>
+</div>
+
+<script>
+
+/* create stars */
+const starContainer = document.getElementById("stars");
+
+for(let i=0;i<80;i++){
+    let star = document.createElement("div");
+    star.className = "star";
+    star.style.top = Math.random()*100 + "%";
+    star.style.left = Math.random()*100 + "%";
+    star.style.animationDelay = Math.random()*2 + "s";
+    starContainer.appendChild(star);
+}
+
+/* QUESTIONS */
+const questions = [
+{q:"Do you still love me if I don't want children? 👶", gif:"https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"},
+{q:"Do I annoy you? 😭", gif:"https://media.giphy.com/media/l2R0corOGwFTlKZjO/giphy.gif"},
+{q:"Is living with me your best decision? 🏡", gif:"https://media.giphy.com/media/f6D6Qd9qE33SAfAF69/giphy.gif"},
+{q:"Do you really want me? ❤️", gif:"https://media.giphy.com/media/ICOgUNjpvO0PC/giphy.gif"},
+{q:"I have trust issues, do you still trust me? 🤍", gif:"https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif"},
+{q:"Have you survived my mood swings for 1 year? 😂", gif:"https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif"},
+{q:"Do you secretly enjoy my overthinking? 🤭", gif:"https://media.giphy.com/media/3oriO6qJiXajN0TyDu/giphy.gif"},
+{q:"Do you secretly hate me? 😤", gif:"https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif"},
+{q:"Would you ever cheat on me? 👀", gif:"https://media.giphy.com/media/QBd2kLB5qDmysEXre9/giphy.gif"},
+{q:"Do you still love me even if I steal your money? 💸", gif:"https://media.giphy.com/media/26his5i9YJTqsqCyY/giphy.gif"},
+{q:"Are we the cutest couple? 🥹", gif:"https://media.giphy.com/media/108M7gCS1JSoO4/giphy.gif"},
+{q:"Are you ready forever with me? ♾️", gif:"https://media.giphy.com/media/euMGM3uD3NHva/giphy.gif"}
+];
+
+let current=0, yes=0, no=0;
+
+const quiz=document.getElementById("quiz");
+const result=document.getElementById("result");
+const gif=document.getElementById("gif");
+
+function show(){
+
+if(current<questions.length){
+quiz.innerHTML=`
+<div class="question">${questions[current].q}</div>
+<button class="yes" onclick="ans('yes')">YES 💖</button>
+<button class="no" onclick="ans('no')">NO 😭</button>
+`;
+gif.src=questions[current].gif;
+}
+else{
+quiz.innerHTML="";
+gif.src="https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif";
+
+result.innerHTML=`
+💖 ANNIVERSARY COMPLETE 💖<br><br>
+YES: ${yes} 💕 <br>
+NO: ${no} 😭 <br><br>
+
+💌 Happy Anniversary my love 💌<br>
+Thank you for loving my chaos, my drama, my overthinking<br>
+and still choosing me every single day 🥹💖<br><br>
+
+Forever starts with you ♾️💕
+`;
+}
+}
+
+function ans(a){
+if(a==="yes")yes++;
+else no++;
+current++;
+show();
+}
+
+show();
+
+</script>
+
+</body>
+</html>
